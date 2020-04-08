@@ -71,11 +71,17 @@ class ComplainController extends ApiController
         $inputs['urgency_level'] = "Low";
         $inputs['mode'] = "";
         $inputs['status'] = "New";
-        $complain = Complain::create($inputs);
 
-        if(!$complain){
-            return $this->respondInternalError("An error occurred while performing an action!");
+        try {
+            $complain = Complain::create($inputs);
+        } catch (\Illuminate\Database\QueryException $exception) {
+            $errorInfo = $exception->errorInfo;
+            return $this->respondInternalError($errorInfo[2]);
         }
+
+//        if(!$complain){
+//            return $this->respondInternalError("An error occurred while performing an action!");
+//        }
 
         if ($request->hasFile('file_1')) {
             $complainFile = array();

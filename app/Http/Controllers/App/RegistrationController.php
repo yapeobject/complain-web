@@ -14,6 +14,8 @@ use App\Permission;
 use App\User;
 use App\ComplainCategory;
 use App\ComplainGroup;
+use App\District;
+use App\Division;
 use App\UserType;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -59,9 +61,13 @@ class RegistrationController extends ApiController
         $comboList = array();
         $complainCategory = ComplainCategory::orderBy('category', 'asc')->get();
         $comboList["complain-category"] = $complainCategory;
+        $complainGroup = ComplainGroup::orderBy('complain_group', 'asc')->get();
+        $comboList["complain-group"] = $complainGroup;
+        $divisionAll = Division::orderBy('division_name', 'asc')->get();
+        $comboList["complain-division"] = $divisionAll;
+        $districtAll = District::orderBy('district_name', 'asc')->get();
+        $comboList["complain-district"] = $districtAll;
 
-//        $complainGroup = ComplainGroup::orderBy('complain_group', 'asc')->get();
-//        $comboList["complain-group"] = $complainGroup;
         return $this->respond([
             'status' => 'success',
             'status_code' => $this->getStatusCode(),
